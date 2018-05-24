@@ -58,12 +58,15 @@ routes.put('/flights/:id', (req, res, next) => {
         .catch(next);
 });
 
-routes.delete('/flights/:id', function (req, res) {
+routes.delete('/flights/:id', (req, res, next) => {
+  const flightId = req.params.id;
 
-    Flight.remove({"_id" :flight._id})
-            .then( res.status(200).json('OK'))
-        .catch(res.status(400).json(error));
-    });
+  Flight.remove({ _id: flightId })
+    .then(() => {
+        res.status(204).send();
+    })
+    .catch(next);
+});
 
 
 module.exports = routes;

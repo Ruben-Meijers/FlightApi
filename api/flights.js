@@ -46,29 +46,16 @@ routes.post('/flights', function (req, res) {
 
 });
 
+routes.put('/flights/:id', (req, res, next) => {
+    const flightId = req.params.id;
+    const flightProps = req.body;
 
-routes.put('/flights/:id', function (req, res) {
-
-    const b= req.body;
-
-    const flight = new Flight({
-        name: b.name,
-        date : b.date,
-        departure : b.departure,
-        arrival : b.arrival,
-        location : b.location
-    });
-    Flight.findOneAndUpdate({ _id: flight._id }, { $set: {
-        name: b.name,
-        date : b.date,
-        departure : b.departure,
-        arrival : b.arrival,
-        location : b.location
-    }}).then(() => res.status(200).json(Flight))
-    .catch((error) => {
-        res.status(400).json(error);
-    });
-
+    Flight.findByIdAndUpdate({
+        _id: flightId
+    }, flightProps)
+        .then(() => Flight.findById({ _id: flightId }))
+        .then((flight) => res.status(202).json(flight))
+        .catch(next);
 });
 
 routes.delete('/flights/:id', function (req, res) {

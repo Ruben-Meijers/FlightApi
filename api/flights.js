@@ -1,13 +1,14 @@
 var express = require('express');
 var routes = express.Router();
 var mongodb = require('../config/mongo.db');
-var Flight = require('../model/flight.model');
+var FlightWrite = require('../model/flightWrite.model');
+var FlightRead = require('../model/flightRead.model');
 
 
 routes.get('/flights', function (req, res) {
     res.contentType('application/json');
 
-    Flight.find({})
+    FlightRead.find({})
         .then(function (flights) {
             res.status(200).json(flights);
         })
@@ -19,7 +20,7 @@ routes.get('/flights', function (req, res) {
 
 routes.get('/flights/:id', function (req, res) {
     res.contentType('application/json');
-    Flight.findOne({ _id: req.params.id })
+    FlightRead.findOne({ _id: req.params.id })
         .then(function (flights) {
             res.status(200).json(flights);
         })
@@ -32,7 +33,7 @@ routes.get('/flights/:id', function (req, res) {
 routes.post('/flights', function (req, res) {
     const b = req.body;
 
-    const flight = new Flight({
+    const flight = new FlightWrite({
 
         name: b.name,
         date : b.date,
@@ -51,14 +52,14 @@ routes.put('/flights/:id', function (req, res) {
 
     const b= req.body;
 
-    const flight = new Flight({
+    const flight = new FlightWrite({
         name: b.name,
         date : b.date,
         departure : b.departure,
         arrival : b.arrival,
         location : b.location
     });
-    Flight.findOneAndUpdate({ _id: flight._id }, { $set: {
+    FlightWrite.findOneAndUpdate({ _id: flight._id }, { $set: {
         name: b.name,
         date : b.date,
         departure : b.departure,
@@ -73,7 +74,7 @@ routes.put('/flights/:id', function (req, res) {
 
 routes.delete('/flights/:id', function (req, res) {
 
-    Flight.remove({"_id" :flight._id})
+    FlightWrite.remove({"_id" :flight._id})
             .then( res.status(200).json('OK'))
         .catch(res.status(400).json(error));
     });

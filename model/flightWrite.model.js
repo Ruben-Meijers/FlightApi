@@ -3,11 +3,26 @@ const Schema = mongoose.Schema;
 
 const flightSchema  = new Schema({
 
-    name: String,
-    date : String,
-    departure : String,
-    arrival : String,
-    location : String
+    name: {
+        type : String,
+        writeable : true
+    }, 
+    date : {
+      type : String,
+      writeable : true  
+    }, 
+    departure : {
+        type : String,
+        writeable : true
+    }, 
+    arrival : {
+        type : String,
+        writeable : true
+    },
+    location : {
+        type : String,
+        writeable : true
+    }
      
 }, {
     timestamps: true
